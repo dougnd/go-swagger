@@ -215,12 +215,20 @@ func (scp *schemaParser) parseDecl(definitions map[string]spec.Schema, decl *sch
 	sp := new(sectionedParser)
 	sp.setTitle = func(lines []string) { schema.Title = joinDropLast(lines) }
 	sp.setDescription = func(lines []string) { schema.Description = joinDropLast(lines) }
+	sp.taggers = []tagParser{
+		newSingleLineTagParser("typeOverride", &setTypeOverride{schPtr, rxf(rxTypeOverrideFmt, "")}),
+	}
 	if err := sp.Parse(decl.Decl.Doc); err != nil {
 		return err
 	}
 
 	// if the type is marked to ignore, just return
 	if sp.ignored {
+		return nil
+	}
+
+	if schema.Type != nil {
+		definitions[decl.Name] = schema
 		return nil
 	}
 

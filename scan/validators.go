@@ -799,3 +799,23 @@ func (ss *setOpResponses) Parse(lines []string) error {
 	ss.set(def, scr)
 	return nil
 }
+
+type setTypeOverride struct {
+	scheme *spec.Schema
+	rx     *regexp.Regexp
+}
+
+func (sto *setTypeOverride) Matches(line string) bool {
+	return sto.rx.MatchString(line)
+}
+
+func (sto *setTypeOverride) Parse(lines []string) error {
+	if len(lines) == 0 || (len(lines) == 1 && len(lines[0]) == 0) {
+		return nil
+	}
+	matches := sto.rx.FindStringSubmatch(lines[0])
+	if len(matches) > 1 && len(matches[1]) > 0 {
+		sto.scheme.Type = spec.StringOrArray{matches[1]}
+	}
+	return nil
+}

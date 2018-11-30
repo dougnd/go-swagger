@@ -32,6 +32,7 @@ Annotation | Description
 **Unique** | when set to true the slice can only contain unique items
 **Required** | when set to true this value needs to be set on the schema
 **Read Only** | when set to true this value will be marked as read-only and is not required in request bodies
+**TypeOverride** | override the detected type
 
 For slice properties there are also items to be defined. This might be a nested collection, for indicating nesting
 level the value is a 0-based index, so items.minLength is the same as items.0.minLength
