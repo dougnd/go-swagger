@@ -123,6 +123,11 @@ type SomeResponse struct {
 	// Created holds the time when this entry was created
 	Created strfmt.DateTime `json:"created"`
 
+	// an OptionalAddress has an optional address
+	//
+	// nullable: true
+	OptionalAddress string `json:"optional_address"`
+
 	// a FooSlice has foos which are strings
 	//
 	// min items: 3

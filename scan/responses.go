@@ -115,6 +115,12 @@ func (sv headerValidations) SetEnum(val string) {
 	}
 	sv.current.Enum = interfaceSlice
 }
+func (sv headerValidations) SetNullable(val bool) {
+	if sv.current.Extensions == nil {
+		sv.current.Extensions = make(spec.Extensions)
+	}
+	sv.current.Extensions["x-nullable"] = val
+}
 func (sv headerValidations) SetDefault(val interface{}) { sv.current.Default = val }
 func (sv headerValidations) SetExample(val interface{}) { sv.current.Example = val }
 
@@ -356,6 +362,7 @@ func (rp *responseParser) parseStructType(gofile *ast.File, response *spec.Respo
 					newSingleLineTagParser("minItems", &setMinItems{headerValidations{&ps}, rxf(rxMinItemsFmt, "")}),
 					newSingleLineTagParser("maxItems", &setMaxItems{headerValidations{&ps}, rxf(rxMaxItemsFmt, "")}),
 					newSingleLineTagParser("unique", &setUnique{headerValidations{&ps}, rxf(rxUniqueFmt, "")}),
+					newSingleLineTagParser("x-nullable", &setNullable{headerValidations{&ps}, rxf(rxNullableFmt, "")}),
 					newSingleLineTagParser("enum", &setEnum{headerValidations{&ps}, rxf(rxEnumFmt, "")}),
 					newSingleLineTagParser("default", &setDefault{&ps.SimpleSchema, headerValidations{&ps}, rxf(rxDefaultFmt, "")}),
 					newSingleLineTagParser("example", &setExample{&ps.SimpleSchema, headerValidations{&ps}, rxf(rxExampleFmt, "")}),

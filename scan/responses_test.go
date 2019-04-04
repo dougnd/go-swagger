@@ -100,7 +100,7 @@ func TestParseResponses(t *testing.T) {
 
 	res, ok := responses["someResponse"]
 	assert.True(t, ok)
-	assert.Len(t, res.Headers, 7)
+	assert.Len(t, res.Headers, 8)
 
 	for k, header := range res.Headers {
 		switch k {
@@ -159,6 +159,11 @@ func TestParseResponses(t *testing.T) {
 			assert.EqualValues(t, 10, *itprop.MaxLength, "'foo_slice.items.maxLength' should have been 10")
 			assert.EqualValues(t, "\\w+", itprop.Pattern, "'foo_slice.items.pattern' should have \\w+")
 			assert.Equal(t, "foo", itprop.Example)
+
+		case "optional_address":
+			assert.Equal(t, "an OptionalAddress has an optional address", header.Description)
+			assert.Equal(t, "string", header.Type)
+			assert.Equal(t, true, header.Extensions["x-nullable"])
 
 		case "bar_slice":
 			assert.Equal(t, "a BarSlice has bars which are strings", header.Description)

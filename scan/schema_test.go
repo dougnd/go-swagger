@@ -31,7 +31,7 @@ func TestSchemaParser(t *testing.T) {
 	assert.Equal(t, "NoModel is a struct without an annotation.", schema.Title)
 	assert.Equal(t, "NoModel exists in a package\nbut is not annotated with the swagger model annotations\nso it should now show up in a test.", schema.Description)
 	assert.Len(t, schema.Required, 3)
-	assert.Len(t, schema.Properties, 11)
+	assert.Len(t, schema.Properties, 12)
 
 	assertProperty(t, &schema, "integer", "id", "int64", "ID")
 	prop, ok := schema.Properties["id"]
@@ -94,6 +94,12 @@ func TestSchemaParser(t *testing.T) {
 	prop, ok = schema.Properties["gocreated"]
 	assert.Equal(t, "GoTimeCreated holds the time when this entry was created in go time.Time", prop.Description)
 	assert.True(t, ok, "should have a 'gocreated' property")
+
+	assertProperty(t, &schema, "string", "optional_address", "", "OptionalAddress")
+	prop, ok = schema.Properties["optional_address"]
+	assert.True(t, ok, "should have a 'optional_address' property")
+	assert.Equal(t, "an OptionalAddress has an optional address", prop.Description)
+	assert.Equal(t, true, prop.Extensions["x-nullable"])
 
 	assertArrayProperty(t, &schema, "string", "foo_slice", "", "FooSlice")
 	prop, ok = schema.Properties["foo_slice"]

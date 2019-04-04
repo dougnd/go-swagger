@@ -121,6 +121,12 @@ func (sv paramValidations) SetEnum(val string) {
 	}
 	sv.current.Enum = interfaceSlice
 }
+func (sv paramValidations) SetNullable(val bool) {
+	if sv.current.Extensions == nil {
+		sv.current.Extensions = make(spec.Extensions)
+	}
+	sv.current.Extensions["x-nullable"] = val
+}
 func (sv paramValidations) SetDefault(val interface{}) { sv.current.Default = val }
 func (sv paramValidations) SetExample(val interface{}) { sv.current.Example = val }
 
@@ -151,6 +157,12 @@ func (sv itemsValidations) SetEnum(val string) {
 		interfaceSlice[i] = d
 	}
 	sv.current.Enum = interfaceSlice
+}
+func (sv itemsValidations) SetNullable(val bool) {
+	if sv.current.Extensions == nil {
+		sv.current.Extensions = make(spec.Extensions)
+	}
+	sv.current.Extensions["x-nullable"] = val
 }
 func (sv itemsValidations) SetDefault(val interface{}) { sv.current.Default = val }
 func (sv itemsValidations) SetExample(val interface{}) { sv.current.Example = val }

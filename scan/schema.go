@@ -110,6 +110,12 @@ func (sv schemaValidations) SetEnum(val string) {
 	}
 	sv.current.Enum = interfaceSlice
 }
+func (sv schemaValidations) SetNullable(val bool) {
+	if sv.current.Extensions == nil {
+		sv.current.Extensions = make(spec.Extensions)
+	}
+	sv.current.Extensions["x-nullable"] = val
+}
 
 type schemaDecl struct {
 	File      *ast.File
@@ -766,6 +772,7 @@ func (scp *schemaParser) createParser(nm string, schema, ps *spec.Schema, fld *a
 			newSingleLineTagParser("minItems", &setMinItems{schemaValidations{ps}, rxf(rxMinItemsFmt, "")}),
 			newSingleLineTagParser("maxItems", &setMaxItems{schemaValidations{ps}, rxf(rxMaxItemsFmt, "")}),
 			newSingleLineTagParser("unique", &setUnique{schemaValidations{ps}, rxf(rxUniqueFmt, "")}),
+			newSingleLineTagParser("x-nullable", &setNullable{schemaValidations{ps}, rxf(rxNullableFmt, "")}),
 			newSingleLineTagParser("enum", &setEnum{schemaValidations{ps}, rxf(rxEnumFmt, "")}),
 			newSingleLineTagParser("default", &setDefault{&spec.SimpleSchema{Type: string(schemeType)}, schemaValidations{ps}, rxf(rxDefaultFmt, "")}),
 			newSingleLineTagParser("type", &setDefault{&spec.SimpleSchema{Type: string(schemeType)}, schemaValidations{ps}, rxf(rxDefaultFmt, "")}),

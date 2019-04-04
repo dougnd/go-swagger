@@ -82,6 +82,11 @@ type NoModel struct {
 	// required: false
 	GoTimeCreated time.Time `json:"gocreated"`
 
+	// an OptionalAddress has an optional address
+	//
+	// nullable: true
+	OptionalAddress string `json:"optional_address"`
+
 	// a FooSlice has foos which are strings
 	//
 	// min items: 3

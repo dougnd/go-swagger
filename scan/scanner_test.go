@@ -795,6 +795,8 @@ func TestSchemaValueExtractors(t *testing.T) {
 
 	verifyIntegerMinMaxManyWords(t, rxf(rxMinItemsFmt, ""), "min", []string{"items"})
 	verifyBoolean(t, rxf(rxUniqueFmt, ""), []string{"unique"}, nil)
+	verifyBoolean(t, rxf(rxNullableFmt, ""), []string{"nullable"}, nil)
+	verifyBoolean(t, rxf(rxNullableFmt, ""), []string{"Nullable"}, nil)
 
 	verifyBoolean(t, rxReadOnly, []string{"read"}, []string{"only"})
 	verifyBoolean(t, rxRequired, []string{"required"}, nil)

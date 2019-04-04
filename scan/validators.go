@@ -37,6 +37,7 @@ type validationBuilder interface {
 	SetPattern(string)
 
 	SetUnique(bool)
+	SetNullable(bool)
 	SetEnum(string)
 	SetDefault(interface{})
 	SetExample(interface{})
@@ -275,6 +276,30 @@ func (su *setUnique) Parse(lines []string) error {
 			return err
 		}
 		su.builder.SetUnique(req)
+	}
+	return nil
+}
+
+type setNullable struct {
+	builder validationBuilder
+	rx      *regexp.Regexp
+}
+
+func (su *setNullable) Matches(line string) bool {
+	return su.rx.MatchString(line)
+}
+
+func (su *setNullable) Parse(lines []string) error {
+	if len(lines) == 0 || (len(lines) == 1 && len(lines[0]) == 0) {
+		return nil
+	}
+	matches := su.rx.FindStringSubmatch(lines[0])
+	if len(matches) > 1 && len(matches[1]) > 0 {
+		req, err := strconv.ParseBool(matches[1])
+		if err != nil {
+			return err
+		}
+		su.builder.SetNullable(req)
 	}
 	return nil
 }
